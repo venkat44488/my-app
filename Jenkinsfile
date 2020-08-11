@@ -5,6 +5,7 @@ pipeline {
             steps {
                 // sh "mvn clean"
                 echo " This stage suppose to clean "
+                echo " modifying clean package"
             }
         }
         stage('--test--') {
