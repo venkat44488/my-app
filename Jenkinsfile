@@ -6,6 +6,7 @@ pipeline {
                 // sh "mvn clean"
                 echo " This stage suppose to clean "
                 echo " modifying clean package"
+                sleep 100
             }
         }
         stage('--test--') {
