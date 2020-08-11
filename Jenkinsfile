@@ -3,17 +3,20 @@ pipeline {
     stages {
         stage('---clean---') {
             steps {
-                sh "mvn clean"
+                // sh "mvn clean"
+                echo " This stage suppose to clean "
             }
         }
         stage('--test--') {
             steps {
-                sh "mvn test"
+                //sh "mvn test"
+                echo " suppose to have mv test stage"
             }
         }
         stage('--package--') {
             steps {
-                sh "mvn package"
+                echo " maven package stage"
+                //sh "mvn package"
             }
         }
     }
