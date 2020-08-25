@@ -17,3 +17,41 @@ node('master') {
 
  }
 }
+
+if(buildArchitecture.equals("amd64") || buildArchitecture.equals("both") ) {
+ node('boa') {
+
+  def pipeline_descriptor
+  def dockerPrivateRegistryForPushes = "${env.DOCKER_REGISTRY_HOST_PORT_FOR_PUSHES}"
+  def dockerPrivateRegistryForPulls  = "${env.DOCKER_REGISTRY_HOST_PORT_FOR_PULLS}"
+  def componentToBuild
+  def buildId
+  def imageMetadata
+  def archSuffix = "amd64"
+  def buildImageTag
+  def packageName
+  
+  pipeline_descriptor = readJSON file: 'build/pipeline/pipeline_descriptor.json'
+  componentToBuild = pipeline_descriptor['component']
+  // Use Branch Name and Jenkins Build Number as our buildID
+  buildId = "${env.BUILD_NUMBER}".toInteger()
+  buildId = String.format('%04d',buildId)
+  buildId = "${env.BRANCH_NAME}_${buildId}"
+  buildId = buildId.replace("_", "-")
+  println "Will use a buildId of: ${buildId}."
+  imageMetadata = pipeline_descriptor['image.metadata']
+  images = []
+  buildImageTag = "${buildId}-${archSuffix}"
+
+  stage('Build amd64 Images') {
+    docker.withRegistry("https://$dockerPrivateRegistryForPushes") {
+      imageMetadata.each {
+        someImageMetadata = it
+        imageSrcDirectory = someImageMetadata['imageSrcDirectory']
+        imageName = imageSrcDirectory.replace("_","-")
+        imageType = someImageMetadata['type']
+        println "Building Docker image for image named: $imageName."
+        images.add(docker.build("$componentToBuild/${imageName}:${buildImageTag}","-f build/docker/images/${archSuffix}/${imageType}/${imageSrcDirectory}/Dockerfile ."))
+      }
+    }
+  } // End stage
