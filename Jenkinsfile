@@ -2,3 +2,5 @@ properties([parameters([choice(choices: ['amd64', 'ppc64le', 'both'], descriptio
 
 def buildArch = params.BuildArchitecture
 println "${buildArch}"
+  echo sh(returnStdout: true, script: 'env')
+
