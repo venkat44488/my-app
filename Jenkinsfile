@@ -55,3 +55,5 @@ if(buildArchitecture.equals("amd64") || buildArchitecture.equals("both") ) {
       }
     }
   } // End stage
+ }
+}
