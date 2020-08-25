@@ -19,7 +19,7 @@ node('master') {
 }
 
 if(buildArchitecture.equals("amd64") || buildArchitecture.equals("both") ) {
- node('boa') {
+ node('master') {
 
   def pipeline_descriptor
   def dockerPrivateRegistryForPushes = "${env.DOCKER_REGISTRY_HOST_PORT_FOR_PUSHES}"
