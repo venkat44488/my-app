@@ -43,17 +43,5 @@ if(buildArchitecture.equals("amd64") || buildArchitecture.equals("both") ) {
   images = []
   buildImageTag = "${buildId}-${archSuffix}"
 
-  stage('Build amd64 Images') {
-    docker.withRegistry("https://$dockerPrivateRegistryForPushes") {
-      imageMetadata.each {
-        someImageMetadata = it
-        imageSrcDirectory = someImageMetadata['imageSrcDirectory']
-        imageName = imageSrcDirectory.replace("_","-")
-        imageType = someImageMetadata['type']
-        println "Building Docker image for image named: $imageName."
-        images.add(docker.build("$componentToBuild/${imageName}:${buildImageTag}","-f build/docker/images/${archSuffix}/${imageType}/${imageSrcDirectory}/Dockerfile ."))
-      }
-    }
-  } // End stage
  }
 }
