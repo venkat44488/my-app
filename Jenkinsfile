@@ -32,7 +32,10 @@ if(buildArchitecture.equals("amd64") || buildArchitecture.equals("both") ) {
   def packageName
   
   pipeline_descriptor = readJSON file: 'build/pipeline/pipeline_descriptor.json'
+  echo "=================${pipeline_descriptor}======================"
+  
   componentToBuild = pipeline_descriptor['component']
+  echo "=================${componentToBuild}======================"
   // Use Branch Name and Jenkins Build Number as our buildID
   buildId = "${env.BUILD_NUMBER}".toInteger()
   buildId = String.format('%04d',buildId)
